@@ -1,0 +1,8 @@
+name: cpvpDuel
+main: pl.centrumpvp.cpvpduel.Main
+version: 0.1
+author: HAMMERxPL
+
+commands:
+    duel:
+        description: Glowna komenda pluginu.
