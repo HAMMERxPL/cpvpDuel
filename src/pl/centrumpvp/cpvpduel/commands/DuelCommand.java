@@ -27,7 +27,10 @@ public class DuelCommand implements CommandExecutor {
     	if (requested == null) {
     		return ChatUtil.sendColored(player, "&cPodany gracz nie jest online.");
     	}
-    	KitType kit = KitType.valueOf(args[1]);
+    	if (requested == player) {
+    		return ChatUtil.sendColored(player, "&cNie mozesz wyzwac siebie do pojedynku.");
+    	}
+    	KitType kit = KitType.getByName(args[1]);
     	if (kit == null) {
     		ChatUtil.sendColored(player, "&cPodany zestaw nie istnieje.");
     		return ChatUtil.sendColored(player, "&cDostepne zestawy: &6HARD&c.");
@@ -41,13 +44,12 @@ public class DuelCommand implements CommandExecutor {
     	}
     	User user = UserManager.getUser(player);
     	User requestedUser = UserManager.getUser(requested);
-    	if (user.getRequests().contains(player.getUniqueId())
-    			&& requestedUser.getRequests().contains(player.getUniqueId())) {
+    	if (!requestedUser.addRequest(player, kit)) {
+    		return ChatUtil.sendColored(player, "&cPodany gracz dostal juz od ciebie zaproszenie!");
+    	}
+    	if (user.canFight(requestedUser, kit)) {
     		arena.prepareGame(player, requested);
     		return true;
-    	}
-    	if (!requestedUser.addRequest(player)) {
-    		return ChatUtil.sendColored(player, "&cPodany gracz dostal juz od ciebie zaproszenie!");
     	}
     	ChatUtil.sendColored(requested, "&3Gracz &b" + player.getName() + " &3 wyzywa cie do walki! Wpisz &b/duel " + player.getName() + " " + kit.name() +  "&3, aby przyjac zaproszenie!");
     	return ChatUtil.sendColored(player, "&3Wyzwales gracza &b" + requested.getName() + " &3do walki!");

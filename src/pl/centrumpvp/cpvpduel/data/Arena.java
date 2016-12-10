@@ -9,6 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import pl.centrumpvp.cpvpduel.Main;
 import pl.centrumpvp.cpvpduel.enums.KitType;
+import pl.centrumpvp.cpvpduel.managers.UserManager;
 import pl.centrumpvp.cpvpduel.utils.ChatUtil;
 
 public class Arena {
@@ -18,6 +19,8 @@ public class Arena {
 	private Location spawn2;
 	private Player player1;
 	private Player player2;
+	private User user1;
+	private User user2;
 	private boolean started;
 	
 	public Arena(KitType kit) {
@@ -45,6 +48,18 @@ public class Arena {
 		return player2;
 	}
 	
+	public User getUser1() {
+		return user1;
+	}
+
+	public User getUser2() {
+		return user2;
+	}
+	
+	public User getOpponent(User user) {
+		return user == user1 ? user2 : user1;
+	}
+	
 	public boolean isStarted() {
 		return started;
 	}
@@ -69,6 +84,14 @@ public class Arena {
 		this.player2 = player2;
 	}
 	
+	public void setUser1(User user1) {
+		this.user1 = user1;
+	}
+	
+	public void setUser2(User user2) {
+		this.user2 = user2;
+	}
+	
 	public void setStarted(boolean started) {
 		this.started = started;
 	}
@@ -77,6 +100,10 @@ public class Arena {
 		this.started = true;
 		this.player1 = first;
 		this.player2 = second;
+		this.user1 = UserManager.getUser(player1);
+		this.user2 = UserManager.getUser(player2);
+		this.user1.setArena(this);
+		this.user2.setArena(this);
 		player1.teleport(this.spawn1);
 		player2.teleport(this.spawn2);
 		ChatUtil.sendColored(player1, "&3Walka rozpocznie sie za 10 sekund! Przygotuj sie!");
@@ -94,6 +121,8 @@ public class Arena {
 		this.started = false;
 		this.player1 = null;
 		this.player2 = null;
+		this.user1 = null;
+		this.user2 = null;
 	}
 	
 	public void giveKit() {
@@ -113,6 +142,12 @@ public class Arena {
             int run = 10;
 
             public void run() {
+                if (run <= 3) {
+                    player1.playSound(player1.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
+                    player2.playSound(player2.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
+                }
+            	player1.setLevel(run);
+            	player2.setLevel(run);
                 if (run > 0) {
                 	if (player1.getLocation().distance(spawn1) > 1) {
                 		player1.teleport(spawn1);
@@ -122,10 +157,6 @@ public class Arena {
                 		player2.teleport(spawn2);
                 		ChatUtil.sendColored(player2, "&cGra jeszcze sie nie rozpoczela!");
                 	}
-                    if (run <= 3) {
-                        player1.playSound(player1.getLocation(), Sound.ORB_PICKUP, 1.0f, 1.0f);
-                        player2.playSound(player2.getLocation(), Sound.ORB_PICKUP, 1.0f, 1.0f);
-                    }
                     --run;
                 }
                 else {

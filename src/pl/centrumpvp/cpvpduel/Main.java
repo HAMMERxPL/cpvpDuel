@@ -7,6 +7,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import pl.centrumpvp.cpvpduel.commands.DuelCommand;
+import pl.centrumpvp.cpvpduel.listeners.PlayerDeathListener;
 import pl.centrumpvp.cpvpduel.listeners.PlayerJoinQuitListener;
 import pl.centrumpvp.cpvpduel.managers.ArenaManager;
 
@@ -18,11 +19,12 @@ public class Main extends JavaPlugin {
 		instance = this;
 		registerListeners();
 		getCommand("duel").setExecutor(new DuelCommand());
-		ArenaManager.registerArenas();
+		ArenaManager.register();
 	}
 	
     private void registerListeners() {
         registerListeners(this,
+        		new PlayerDeathListener(),
         		new PlayerJoinQuitListener());
     }
     

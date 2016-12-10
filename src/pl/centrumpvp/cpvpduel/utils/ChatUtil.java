@@ -15,7 +15,9 @@ public class ChatUtil {
             sender.sendMessage(fixColors(message));
             return true;
         }
-        sender.sendMessage(fixColors(message));
+        if (permission == null) {
+        	sender.sendMessage(fixColors(message));
+        }
         return true;
     }
     
