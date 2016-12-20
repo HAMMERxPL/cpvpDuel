@@ -16,6 +16,7 @@ public class PlayerDeathListener implements Listener {
 		User user = UserManager.getUser(victim);
 		if (user.isFighting()) {
 			User opponent = user.getArena().getOpponent(user);
+			opponent.getArena().stopGame();
 			opponent.setFighting(false);
 			opponent.setArena(null);
 			user.setFighting(false);

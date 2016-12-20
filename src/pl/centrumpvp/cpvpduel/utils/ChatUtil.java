@@ -12,11 +12,11 @@ public class ChatUtil {
 
     public static boolean send(CommandSender sender, String message, String permission) {
         if (permission != null && !sender.hasPermission(permission)) {
-            sender.sendMessage(fixColors(message));
+            sender.sendMessage(message);
             return true;
         }
         if (permission == null) {
-        	sender.sendMessage(fixColors(message));
+        	sender.sendMessage(message);
         }
         return true;
     }

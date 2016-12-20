@@ -30,7 +30,7 @@ public class DuelCommand implements CommandExecutor {
     	if (requested == player) {
     		return ChatUtil.sendColored(player, "&cNie mozesz wyzwac siebie do pojedynku.");
     	}
-    	KitType kit = KitType.getByName(args[1]);
+    	KitType kit = KitType.getKitType(args[1]);
     	if (kit == null) {
     		ChatUtil.sendColored(player, "&cPodany zestaw nie istnieje.");
     		return ChatUtil.sendColored(player, "&cDostepne zestawy: &6HARD&c.");

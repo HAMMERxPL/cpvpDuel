@@ -1,20 +1,25 @@
 package pl.centrumpvp.cpvpduel.enums;
 
-import java.util.Locale;
-
 public enum KitType {
 	
-    HARD;
+    HARD("HARD");
     
-    private KitType() {
+	private final String name;
+	
+    private KitType(String name) {
+    	this.name = name;
+    }
+    
+    public String getName() {
+        return name;
     }
 
-    public static KitType getByName(String name) {
-    	try {
-    		return valueOf(name.toUpperCase(Locale.ENGLISH));
+    public static KitType getKitType(String name) {
+    	for (KitType kit : KitType.values()) {
+    		if (kit.getName().equalsIgnoreCase(name)) {
+    			return kit;
+    		}
     	}
-    	catch (Exception ex) {
-    		return null;
-    	}
+    	return null;
     }
 }

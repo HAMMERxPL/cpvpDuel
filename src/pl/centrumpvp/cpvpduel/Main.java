@@ -2,7 +2,6 @@ package pl.centrumpvp.cpvpduel;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,18 +21,18 @@ public class Main extends JavaPlugin {
 		ArenaManager.register();
 	}
 	
-    private void registerListeners() {
-        registerListeners(this,
-        		new PlayerDeathListener(),
-        		new PlayerJoinQuitListener());
-    }
-    
-    private void registerListeners(Plugin plugin, Listener... listeners) {
-        PluginManager pluginManager = Bukkit.getPluginManager();
-        for (Listener listener : listeners) {
-            pluginManager.registerEvents(listener, plugin);
-        }
-    }
+	private void registerListeners() {
+		registerListeners(
+				new PlayerDeathListener(),
+				new PlayerJoinQuitListener());
+	}
+	
+	private void registerListeners(Listener... listeners) {
+		PluginManager pluginManager = Bukkit.getPluginManager();
+		for (Listener listener : listeners) {
+			pluginManager.registerEvents(listener, this);
+		}
+	}
 
 	public static Main getInstance() {
 		return instance;
