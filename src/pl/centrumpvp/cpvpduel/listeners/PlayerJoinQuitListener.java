@@ -10,22 +10,20 @@ import pl.centrumpvp.cpvpduel.data.User;
 import pl.centrumpvp.cpvpduel.managers.UserManager;
 
 public class PlayerJoinQuitListener implements Listener {
-	
-	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent event) {
-		Player player = event.getPlayer();
-		User user = UserManager.getUser(player);
-		if (user == null) {
-			UserManager.createUser(player);
-		}
-	}
-	
-	@EventHandler
-	public void onPlayerQuit(PlayerQuitEvent event) {
-		Player player = event.getPlayer();
-		User user = UserManager.getUser(player);
-		if (user != null) {
-			UserManager.removeUser(player);
-		}
-	}
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        UserManager.createUser(player);
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        User user = UserManager.getUser(player);
+        if (user.isFighting()) {
+            user.getArena().stopGame();
+        }
+        UserManager.removeUser(player);
+    }
 }
