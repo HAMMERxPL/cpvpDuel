@@ -58,7 +58,7 @@ public class Arena {
     }
 
     public User getOpponent(User user) {
-        return user == user1 ? user2 : user1;
+        return user.equals(user1) ? user2 : user1;
     }
 
     public boolean isStarted() {
